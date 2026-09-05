@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ขอบคุณสำหรับการสั่งซื้อ - Luna & Spiral</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="shop-container" style="max-width: 600px; text-align: center;">
+        <div class="shop-header">
+            <p class="handwritten">Thank You</p>
+            <h1>สั่งซื้อสำเร็จแล้ว ✦</h1>
+        </div>
+        
+        <div style="background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); text-align: left; margin-bottom: 25px;">
+            <h3 style="font-family: var(--serif-font); margin-top: 0; color: var(--olive-green); border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;">สรุปรายการคำสั่งซื้อ</h3>
+            <p><strong>ขนาดกล่อง:</strong> <span id="summarySize">-</span></p>
+            <p><strong>หมวดสินค้าที่เลือก:</strong> <span id="summaryCategories">-</span></p>
+            <p><strong>ยอดชำระสุทธิ:</strong> <span id="summaryPrice" style="color: var(--earth-brown); font-weight: bold;">-</span> บาท</p>
+        </div>
+
+        <a href="order.html" style="display: inline-block; background-color: var(--olive-green); color: var(--card-bg); padding: 12px 25px; border-radius: 8px; text-decoration: none; font-family: var(--serif-font);">กลับไปหน้าสั่งซื้อ</a>
+    </div>
+
+    <script>
+        const dataStr = sessionStorage.getItem('orderSummary');
+        if (dataStr) {
+            const data = JSON.parse(dataStr);
+            document.getElementById('summarySize').textContent = `ขนาด ${data.size}`;
+            document.getElementById('summaryCategories').textContent = data.categories.join(', ');
+            document.getElementById('summaryPrice').textContent = Number(data.totalPrice).toFixed(2);
+        }
+    </script>
+</body>
+</html>
 
