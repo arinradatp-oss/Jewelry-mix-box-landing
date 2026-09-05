@@ -1,1 +1,147 @@
+[
+  {
+    "category": "เชือก",
+    "multiplier": 1.0,
+    "items": [
+      {
+        "id": "rop-01",
+        "name": "สร้อยข้อมือถักเชือกเทียนปมโบราณ",
+        "description": "งานถักแฮนด์เมดปราณีต แต่งปมเงื่อนโบราณ เรียบง่ายใส่ได้ทุกวัน",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      },
+      {
+        "id": "rop-02",
+        "name": "สร้อยคอเชือกฝ้ายดิบถักลายเกลียว",
+        "description": "เชือกฝ้ายธรรมชาติย้อมสีเปลือกไม้ สัมผัสนุ่ม ไม่ระคายเคืองผิว",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      },
+      {
+        "id": "rop-03",
+        "name": "พวงกุญแจเชือกถักมาคราเม่ลายใบไม้",
+        "description": "เชือกคอตตอนปักปมสไตล์โบฮีเมียน ห้อยกระเป๋าหรือกุญแจเก๋ๆ",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      }
+    ]
+  },
+  {
+    "category": "ลูกปัด",
+    "multiplier": 1.0,
+    "items": [
+      {
+        "id": "bea-01",
+        "name": "สร้อยข้อมือลูกปัดหินดินเผาดินธรรมชาติ",
+        "description": "ลูกปัดปั้นมือเผาด้วยอุณหภูมิต่ำ ให้ผิวสัมผัสด้านและอบอุ่น",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      },
+      {
+        "id": "bea-02",
+        "name": "สร้อยลูกปัดไม้สนผสมหินสีเอิร์ธโทน",
+        "description": "ร้อยสลับเม็ดไม้และหินทรายธรรมชาติ ให้กลิ่นอายป่าเขา",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      },
+      {
+        "id": "bea-03",
+        "name": "สร้อยข้อเท้าลูกปัดเซรามิกเพ้นท์ลาย",
+        "description": "ลูกปัดเคลือบเงาสีเขียวขี้ม้าและครีม เพ้นท์ลายเส้นโบราณ",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      }
+    ]
+  },
+  {
+    "category": "เงิน",
+    "multiplier": 1.3,
+    "items": [
+      {
+        "id": "sil-01",
+        "name": "แหวนเงินรมดำลายก้นหอยโบราณ",
+        "description": "เงินแท้รมดำขับลวดลายก้นหอยธรรมชาติ สไตล์ชนเผ่า",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      },
+      {
+        "id": "sil-02",
+        "name": "จี้เงินรูปพระจันทร์เสี้ยวและดวงดาว",
+        "description": "เครื่องประดับเงินแกะสลักมือรูปท้องยามค่ำคืน เล่นผิวทราย",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      },
+      {
+        "id": "sil-03",
+        "name": "ต่างหูเงินตอกลายดาวกระจาย",
+        "description": "ต่างหูเงินทรงกลมแบน ตอกลายดาวแฮนด์เมดสะท้อนแสงไฟอ่อนๆ",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      }
+    ]
+  },
+  {
+    "category": "ทอง",
+    "multiplier": 1.5,
+    "items": [
+      {
+        "id": "gol-01",
+        "name": "กำไลทองเหลืองแท้ตีลายพระจันทร์",
+        "description": "ทองเหลืองปัดด้าน สลักลายพระจันทร์เต็มดวงและข้างแรมรอบวง",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      },
+      {
+        "id": "gol-02",
+        "name": "แหวนทองเหลืองพันเกลียวก้นหอย",
+        "description": "ดีไซน์หางก้นหอยม้วนตัวอิสระ ปรับขนาดได้ตามนิ้ว",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      },
+      {
+        "id": "gol-03",
+        "name": "จี้ทองเหลืองรูปดาวห้าแฉกโบราณ",
+        "description": "ทองเหลืองปัดเงาขอบ ขัดด้านตรงกลาง ให้ความรู้สึกอบอุ่นวินเทจ",
+        "base_prices": {
+          "S": { "price": 250, "min_qty": 3, "max_qty": 5 },
+          "M": { "price": 390, "min_qty": 6, "max_qty": 8 },
+          "L": { "price": 550, "min_qty": 9, "max_qty": 12 }
+        }
+      }
+    ]
+  }
+]
 
