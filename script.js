@@ -2,10 +2,11 @@
  * ==========================================
  * HTML Element IDs and Selectors Reference:
  * ==========================================
- * - #boxSize         : <select> element for choosing box size ('S', 'M', 'L')
- * - .cat-checkbox    : Class for category checkboxes (Values: 'rope', 'bead', 'silver', 'gold')
- * - #totalPrice      : Element (span/div) to display the real-time calculated price
- * - #orderForm       : <form> element containing the inputs and submit button
+ * - input[name="boxSize"]: <input type="radio"> elements for choosing box size ('S', 'M', 'L')
+ * - .cat-checkbox        : Class for category checkboxes (Values: 'rope', 'bead', 'silver', 'gold')
+ * - #totalPrice          : Element to display the real-time calculated price
+ * - #orderForm           : <form> element containing inputs and submit button
+ * - #submitBtn           : <button> element for form submission (dynamically disabled if 0 categories selected)
  * ==========================================
  */
 
@@ -23,26 +24,41 @@ const CATEGORY_MULTIPLIERS = {
 };
 
 // DOM Elements
-const boxSizeSelect = document.getElementById('boxSize');
+const boxSizeRadios = document.querySelectorAll('input[name="boxSize"]');
 const categoryCheckboxes = document.querySelectorAll('.cat-checkbox');
 const totalPriceDisplay = document.getElementById('totalPrice');
 const orderForm = document.getElementById('orderForm');
+const submitBtn = document.getElementById('submitBtn');
 
 /**
- * Calculates the price in real-time based on selected size and categories.
+ * Calculates the price in real-time based on selected radio size and checked categories.
  * Formula: Average Multiplier = Sum of multipliers / Number of selected categories
  * Final Price = Base Price * Average Multiplier
  */
 function calculatePrice() {
-  const selectedSize = boxSizeSelect.value;
+  let selectedSize = 'S';
+  boxSizeRadios.forEach(r => {
+    if (r.checked) selectedSize = r.value;
+  });
+  
   const basePrice = BASE_PRICES[selectedSize] || 0;
-
   const checkedCategories = Array.from(categoryCheckboxes).filter(cb => cb.checked);
 
   // Validation: Must select at least one category
   if (checkedCategories.length === 0) {
     totalPriceDisplay.textContent = 'กรุณาเลือกหมวดสินค้าอย่างน้อย 1 หมวด';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.5';
+      submitBtn.style.cursor = 'not-allowed';
+    }
     return { valid: false, price: 0 };
+  }
+
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.style.opacity = '1';
+    submitBtn.style.cursor = 'pointer';
   }
 
   let sumMultiplier = 0;
@@ -59,12 +75,16 @@ function calculatePrice() {
     valid: true, 
     price: finalPrice, 
     avgMultiplier, 
-    selectedSize 
+    selectedSize,
+    categories: checkedCategories.map(cb => cb.value)
   };
 }
 
-// Real-time event listeners for size change and checkbox toggles
-boxSizeSelect.addEventListener('change', calculatePrice);
+// Real-time event listeners for size radio changes and category checkbox toggles
+boxSizeRadios.forEach(r => {
+  r.addEventListener('change', calculatePrice);
+});
+
 categoryCheckboxes.forEach(cb => {
   cb.addEventListener('change', calculatePrice);
 });
@@ -81,20 +101,15 @@ async function submitOrder(event) {
     return;
   }
 
-  const checkedCategories = Array.from(categoryCheckboxes)
-    .filter(cb => cb.checked)
-    .map(cb => cb.value);
-
   const payload = {
     size: calcResult.selectedSize,
     basePrice: BASE_PRICES[calcResult.selectedSize],
-    categories: checkedCategories,
+    categories: calcResult.categories,
     averageMultiplier: calcResult.avgMultiplier,
     totalPrice: calcResult.price
   };
 
-  // แทนที่ URL ด้านล่างด้วย URL จากขั้นที่ 2
-  const url = "[วาง URL จากขั้นที่ 2]";
+  const url = "https://script.google.com/macros/s/AKfycbw2DW-j41igcer-VjGxed8RWGEfpc7TCoXLxbG5JZievMYExmWQ_WwxPIzxmUIRWoZ6/exec";
 
   try {
     const response = await fetch(url, {
@@ -122,4 +137,3 @@ if (orderForm) {
 
 // Initial calculation on page load
 calculatePrice();
-
