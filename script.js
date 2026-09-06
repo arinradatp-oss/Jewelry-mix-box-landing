@@ -4,6 +4,9 @@
  * ==========================================
  * - input[name="boxSize"]: <input type="radio"> elements for choosing box size ('S', 'M', 'L')
  * - .cat-checkbox        : Class for category checkboxes (Values: 'rope', 'bead', 'silver', 'gold')
+ * - #customerName        : <input type="text"> ชื่อลูกค้า
+ * - #contact             : <input type="text"> ช่องทางติดต่อ
+ * - #note                : <textarea> หมายเหตุ
  * - #totalPrice          : Element to display the real-time calculated price
  * - #orderForm           : <form> element containing inputs and submit button
  * - #submitBtn           : <button> element for form submission (dynamically disabled if 0 categories selected)
@@ -29,6 +32,9 @@ const categoryCheckboxes = document.querySelectorAll('.cat-checkbox');
 const totalPriceDisplay = document.getElementById('totalPrice');
 const orderForm = document.getElementById('orderForm');
 const submitBtn = document.getElementById('submitBtn');
+const customerNameInput = document.getElementById('customerName');
+const contactInput = document.getElementById('contact');
+const noteInput = document.getElementById('note');
 
 /**
  * Calculates the price in real-time based on selected radio size and checked categories.
@@ -40,7 +46,7 @@ function calculatePrice() {
   boxSizeRadios.forEach(r => {
     if (r.checked) selectedSize = r.value;
   });
-  
+
   const basePrice = BASE_PRICES[selectedSize] || 0;
   const checkedCategories = Array.from(categoryCheckboxes).filter(cb => cb.checked);
 
@@ -71,10 +77,10 @@ function calculatePrice() {
   const finalPrice = basePrice * avgMultiplier;
 
   totalPriceDisplay.textContent = finalPrice.toFixed(2);
-  return { 
-    valid: true, 
-    price: finalPrice, 
-    avgMultiplier, 
+  return {
+    valid: true,
+    price: finalPrice,
+    avgMultiplier,
     selectedSize,
     categories: checkedCategories.map(cb => cb.value)
   };
@@ -91,6 +97,8 @@ categoryCheckboxes.forEach(cb => {
 
 /**
  * Submits the order payload via fetch POST without custom headers or no-cors mode.
+ * Field names match exactly what doPost(e) in Apps Script expects:
+ * customerName, contact, boxSize, categories, total, note
  */
 async function submitOrder(event) {
   if (event) event.preventDefault();
@@ -101,13 +109,26 @@ async function submitOrder(event) {
     return;
   }
 
+  const customerName = customerNameInput ? customerNameInput.value.trim() : '';
+  const contact = contactInput ? contactInput.value.trim() : '';
+  const note = noteInput ? noteInput.value.trim() : '';
+
+  if (!customerName || !contact) {
+    alert('กรุณากรอกชื่อและช่องทางติดต่อให้ครบก่อนสั่งซื้อ');
+    return;
+  }
+
   const payload = {
-    size: calcResult.selectedSize,
-    basePrice: BASE_PRICES[calcResult.selectedSize],
-    categories: calcResult.categories,
-    averageMultiplier: calcResult.avgMultiplier,
-    totalPrice: calcResult.price
+    customerName: customerName,
+    contact: contact,
+    boxSize: calcResult.selectedSize,
+    categories: calcResult.categories.join(', '),
+    total: calcResult.price,
+    note: note
   };
+
+  // บันทึกไว้เพื่อนำไปแสดงในหน้า thankyou.html
+  sessionStorage.setItem('orderSummary', JSON.stringify(payload));
 
   const url = "https://script.google.com/macros/s/AKfycbw2DW-j41igcer-VjGxed8RWGEfpc7TCoXLxbG5JZievMYExmWQ_WwxPIzxmUIRWoZ6/exec";
 
@@ -121,9 +142,7 @@ async function submitOrder(event) {
       throw new Error('Network response was not ok');
     }
 
-    const result = await response.json();
-    alert('ส่งคำสั่งซื้อสำเร็จ!');
-    console.log('Order success:', result);
+    window.location.href = "thankyou.html";
   } catch (error) {
     console.error('Error submitting order:', error);
     alert('เกิดข้อผิดพลาดในการส่งคำสั่งซื้อ กรุณาลองใหม่อีกครั้ง');
