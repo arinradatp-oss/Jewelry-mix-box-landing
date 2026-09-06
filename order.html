@@ -13,6 +13,7 @@
         </div>
 
         <form id="orderForm" style="background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color);">
+
             <div style="margin-bottom: 25px;">
                 <label style="display: block; margin-bottom: 12px; font-weight: 600; font-family: var(--serif-font);">1. เลือกขนาดกล่อง:</label>
                 <div style="display: flex; gap: 20px;">
@@ -32,6 +33,25 @@
                 </div>
             </div>
 
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 12px; font-weight: 600; font-family: var(--serif-font);">3. ข้อมูลผู้สั่งซื้อ:</label>
+
+                <label for="customerName" style="display: block; margin-bottom: 6px; font-size: 0.9rem;">ชื่อลูกค้า <span style="color: #b33;">*</span></label>
+                <input type="text" id="customerName" name="customerName" required
+                    placeholder="ชื่อ-นามสกุล หรือชื่อที่ใช้ติดต่อ"
+                    style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); font-family: var(--body-font); background: #fcfbfa; margin-bottom: 15px;">
+
+                <label for="contact" style="display: block; margin-bottom: 6px; font-size: 0.9rem;">ช่องทางติดต่อ (เบอร์โทร / LINE ID) <span style="color: #b33;">*</span></label>
+                <input type="text" id="contact" name="contact" required
+                    placeholder="เช่น 08X-XXX-XXXX หรือ LINE ID"
+                    style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); font-family: var(--body-font); background: #fcfbfa; margin-bottom: 15px;">
+
+                <label for="note" style="display: block; margin-bottom: 6px; font-size: 0.9rem;">หมายเหตุ (ถ้ามี)</label>
+                <textarea id="note" name="note" rows="3"
+                    placeholder="เช่น ความต้องการเพิ่มเติม สีที่ชอบ ฯลฯ"
+                    style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); font-family: var(--body-font); background: #fcfbfa; resize: vertical;"></textarea>
+            </div>
+
             <div style="margin-bottom: 25px; font-size: 1.3rem; font-family: var(--serif-font); border-top: 1px dashed var(--border-color); padding-top: 15px;">
                 ราคารวมสุทธิ: <span id="totalPrice" style="color: var(--earth-brown); font-weight: bold;">0.00</span> บาท
             </div>
@@ -40,91 +60,6 @@
         </form>
     </div>
 
-    <script>
-        /**
-         * HTML Element IDs and Selectors Reference:
-         * - #boxSize         : <input type="radio"> elements for choosing box size ('S', 'M', 'L')
-         * - .cat-checkbox    : Class for category checkboxes (Values: 'rope', 'bead', 'silver', 'gold')
-         * - #totalPrice      : Element to display the real-time calculated price
-         * - #orderForm       : <form> element
-         * - #submitBtn       : <button> element for submission
-         */
-        const BASE_PRICES = { 'S': 250, 'M': 390, 'L': 550 };
-        const CATEGORY_MULTIPLIERS = { 'rope': 1.0, 'bead': 1.0, 'silver': 1.3, 'gold': 1.5 };
-
-        const boxSizeRadios = document.querySelectorAll('input[name="boxSize"]');
-        const categoryCheckboxes = document.querySelectorAll('.cat-checkbox');
-        const totalPriceDisplay = document.getElementById('totalPrice');
-        const orderForm = document.getElementById('orderForm');
-        const submitBtn = document.getElementById('submitBtn');
-
-        function calculatePrice() {
-            let selectedSize = 'S';
-            boxSizeRadios.forEach(r => { if (r.checked) selectedSize = r.value; });
-            const basePrice = BASE_PRICES[selectedSize] || 0;
-
-            const checkedCategories = Array.from(categoryCheckboxes).filter(cb => cb.checked);
-
-            if (checkedCategories.length === 0) {
-                totalPriceDisplay.textContent = 'กรุณาเลือกอย่างน้อย 1 หมวด';
-                submitBtn.disabled = true;
-                submitBtn.style.opacity = '0.5';
-                submitBtn.style.cursor = 'not-allowed';
-                return { valid: false };
-            }
-
-            submitBtn.disabled = false;
-            submitBtn.style.opacity = '1';
-            submitBtn.style.cursor = 'pointer';
-
-            let sumMultiplier = 0;
-            checkedCategories.forEach(cb => {
-                sumMultiplier += (CATEGORY_MULTIPLIERS[cb.value] || 1.0);
-            });
-
-            const avgMultiplier = sumMultiplier / checkedCategories.length;
-            const finalPrice = basePrice * avgMultiplier;
-
-            totalPriceDisplay.textContent = finalPrice.toFixed(2);
-            return { valid: true, price: finalPrice, size: selectedSize, categories: checkedCategories.map(c => c.value), avgMultiplier };
-        }
-
-        boxSizeRadios.forEach(r => r.addEventListener('change', calculatePrice));
-        categoryCheckboxes.forEach(cb => cb.addEventListener('change', calculatePrice));
-
-        async function submitOrder(event) {
-            if (event) event.preventDefault();
-            const res = calculatePrice();
-            if (!res.valid) return;
-
-            const payload = {
-                size: res.size,
-                categories: res.categories,
-                totalPrice: res.price
-            };
-
-            // บันทึกข้อมูลลง sessionStorage เพื่อนำไปแสดงหน้า thankyou.html
-            sessionStorage.setItem('orderSummary', JSON.stringify(payload));
-
-            // ตัวอย่าง URL Google Apps Script Web App สำหรับรับค่าไปบันทึก Google Sheet
-            const url = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
-
-            try {
-                // ส่งข้อมูลไป Google Sheet แบบฟอร์มปกติ (ไม่ใส่ header เอง)
-                await fetch(url, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-            } catch (e) {
-                console.log("Mock submission success or network note:", e);
-            }
-
-            window.location.href = "thankyou.html";
-        }
-
-        orderForm.addEventListener('submit', submitOrder);
-        calculatePrice();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
-
